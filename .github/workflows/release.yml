@@ -1,0 +1,33 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Tag new PR
+        run: |
+          git pull
+          git fetch --tags
+          TAG=$(git ls-remote --tags --sort='authordate' | cut -d"/" -f3|tail -1)
+          VALUE1=$(echo $TAG | cut -d"." -f1)
+          VALUE2=$(echo $TAG | cut -d"." -f2)
+          VALUE3=$(echo $TAG | cut -d"." -f3)
+          NEW_TAG="${VALUE1}.${VALUE2}.$(expr $VALUE3 + 1)"
+          git tag ${NEW_TAG}
+          git push origin ${NEW_TAG}
