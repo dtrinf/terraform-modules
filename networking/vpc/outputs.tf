@@ -30,15 +30,15 @@ output "private_subnet_ids" {
 
 output "private_route_table_ids" {
   description = "Private route table IDs."
-  value = module.vpc.private_route_table_ids
+  value       = module.vpc.private_route_table_ids
 }
 
 output "public_route_table_ids" {
   description = "Public route table IDs."
-  value = module.vpc.public_route_table_ids
+  value       = module.vpc.public_route_table_ids
 }
 
 output "vpc_main_route_table_id" {
   description = "VPC main route table ID."
-  value = module.vpc.vpc_main_route_table_id
+  value       = module.vpc.vpc_main_route_table_id
 }
