@@ -1,16 +1,16 @@
-# AWS VPC Terraform module
+# AWS DNS Zone creation Terraform module
 
 Terraform module used to create VPCs.
 
 ## Usage
 
-### VPC Creation
+### DNS Zone Creation
 
-VPC Creation:
+DNS Zone Creation:
 
 ```hcl
 terraform {
-  source = "git::git@github.com:dtrinf/terraform-modules.git//networking/vpc?ref=v1.0.1"
+  source = "git::git@github.com:dtrinf/terraform-modules.git//networking/route53/zones?ref=${local.client.locals.terraform_modules_version}"
 }
 
 include {
@@ -18,18 +18,31 @@ include {
 }
 
 locals {
-  client      = read_terragrunt_config(find_in_parent_folders("client.hcl"))
-  datacenter  = read_terragrunt_config(find_in_parent_folders("datacenter.hcl"))
   environment = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+  client      = read_terragrunt_config(find_in_parent_folders("client.hcl"))
 }
 
+
 inputs = {
-  vpc_cidr        = local.client.locals[local.environment.locals.environment].network.vpc_cidr
-  private_subnets = local.client.locals[local.environment.locals.environment].network.private_subnets
-  public_subnets  = local.client.locals[local.environment.locals.environment].network.public_subnets
-  region          = local.datacenter.locals.aws_region
-  environment     = local.environment.locals.environment
+
+  domain = local.client.locals.domain
+
+  zones = {
+    (local.client.locals.domain) = {
+      tags = {
+        env = local.environment.locals.environment
+      }
+    }
+  }
 }
+```
+
+### DNS Zone Import
+
+If the DNS Zone is already created, you can import it.
+
+```sh
+terragrunt import 'module.zones.aws_route53_zone.this["DomainName"]' 'Zone ID'
 ```
 
 
