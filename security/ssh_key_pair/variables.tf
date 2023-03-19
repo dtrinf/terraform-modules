@@ -6,7 +6,7 @@ variable "aws_profile" {
   type = string
 }
 
-variable "create_key_pair" {
+variable "create" {
   description = "Controls if key pair should be created"
   type        = bool
   default     = true

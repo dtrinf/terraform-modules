@@ -15,7 +15,7 @@ module "key_pair" {
 
   public_key = var.custom_public_key ? var.public_key : tls_private_key.this.public_key_openssh
 
-  create_key_pair = var.create_key_pair
+  create = var.create
 
   tags = var.tags
 }
