@@ -1,12 +1,12 @@
 
 output "key_pair_key_name" {
   description = "The key pair name."
-  value       = module.key_pair.key_pair_key_name
+  value       = module.key_pair.key_pair_name
 }
 
 output "key_pair_key_pair_id" {
   description = "The key pair ID."
-  value       = module.key_pair.key_pair_key_pair_id
+  value       = module.key_pair.key_pair_id
 }
 
 output "key_pair_fingerprint" {
